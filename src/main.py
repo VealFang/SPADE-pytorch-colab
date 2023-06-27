@@ -220,7 +220,7 @@ def visualize_loc_result(test_imgs, gt_mask_list, score_map_list, threshold,
         ax_img[0].title.set_text('Image')
         ax_img[1].imshow(test_gt, cmap='gray')
         ax_img[1].title.set_text('GroundTruth')
-        ax_img[2].imshow(img, cmap='gray', interpolation='none')
+        ax_img[2].imshow(test_img, cmap='gray', interpolation='none')
         ax_img[2].imshow(heat_map, cmap='jet', alpha=0.5, interpolation='none')
         ax_img[2].title.set_text('Predicted heat map')
         ax_img[3].imshow(test_pred, cmap='gray')

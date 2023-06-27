@@ -202,14 +202,15 @@ def visualize_loc_result(test_imgs, gt_mask_list, score_map_list, threshold,
         test_img = test_imgs[t_idx]
         test_img = denormalization(test_img)
         test_gt = gt_mask_list[t_idx].transpose(1, 2, 0).squeeze()
+        heat_map = score_map_list[t_idx] * 255
         test_pred = score_map_list[t_idx]
         test_pred[test_pred <= threshold] = 0
         test_pred[test_pred > threshold] = 1
         test_pred_img = test_img.copy()
         test_pred_img[test_pred == 0] = 0
 
-        fig_img, ax_img = plt.subplots(1, 4, figsize=(12, 4))
-        fig_img.subplots_adjust(left=0, right=1, bottom=0, top=1)
+        fig_img, ax_img = plt.subplots(1, 5, figsize=(12, 3))
+        fig_img.subplots_adjust(left=0, right=0.9, bottom=0, top=1)
 
         for ax_i in ax_img:
             ax_i.axes.xaxis.set_visible(False)
@@ -219,10 +220,13 @@ def visualize_loc_result(test_imgs, gt_mask_list, score_map_list, threshold,
         ax_img[0].title.set_text('Image')
         ax_img[1].imshow(test_gt, cmap='gray')
         ax_img[1].title.set_text('GroundTruth')
-        ax_img[2].imshow(test_pred, cmap='gray')
-        ax_img[2].title.set_text('Predicted mask')
-        ax_img[3].imshow(test_pred_img)
-        ax_img[3].title.set_text('Predicted anomalous image')
+        ax_img[2].imshow(img, cmap='gray', interpolation='none')
+        ax_img[2].imshow(heat_map, cmap='jet', alpha=0.5, interpolation='none')
+        ax_img[2].title.set_text('Predicted heat map')
+        ax_img[3].imshow(test_pred, cmap='gray')
+        ax_img[3].title.set_text('Predicted mask')
+        ax_img[4].imshow(test_pred_img)
+        ax_img[4].title.set_text('Predicted anomalous image')
 
         os.makedirs(os.path.join(save_path, 'images'), exist_ok=True)
         fig_img.savefig(os.path.join(save_path, 'images', '%s_%03d.png' % (class_name, t_idx)), dpi=100)

@@ -198,6 +198,7 @@ def calc_dist_matrix(x, y):
 def visualize_loc_result(test_imgs, gt_mask_list, score_map_list, threshold,
                          save_path, class_name, vis_num=5):
 
+    vis_num = len(score_map_list)
     for t_idx in range(vis_num):
         test_img = test_imgs[t_idx]
         test_img = denormalization(test_img)
